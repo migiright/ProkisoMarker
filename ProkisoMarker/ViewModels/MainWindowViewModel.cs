@@ -1,5 +1,7 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using ProkisoMarker.Models;
+using System.Diagnostics;
 
 namespace ProkisoMarker.ViewModels
 {
@@ -14,9 +16,60 @@ namespace ProkisoMarker.ViewModels
 			set { SetProperty(ref _title, value); }
 		}
 
+		private Problem _selectedProblem;
+		public Problem SelectedProblem
+		{
+			get { return _selectedProblem; }
+			set { SetProperty(ref _selectedProblem, value); }
+		}
+
 		public MainWindowViewModel(IModel model)
 		{
 			Model = model;
+		}
+
+		private DelegateCommand _addProblen;
+		public DelegateCommand AddProblem =>
+				_addProblen ?? (_addProblen = new DelegateCommand(ExecuteAddProblem));
+
+		void ExecuteAddProblem()
+		{
+			var p = new Problem();
+			Model.Problems.Add(p);
+			SelectedProblem = p;
+		}
+
+		private DelegateCommand _removeProblem;
+		public DelegateCommand RemoveProblem =>
+				_removeProblem ?? (_removeProblem = new DelegateCommand(ExecuteRemoveProblem));
+
+		void ExecuteRemoveProblem()
+		{
+			Model.Problems.Remove(SelectedProblem);
+		}
+
+		private DelegateCommand _upProblem;
+		public DelegateCommand UpProblem =>
+				_upProblem ?? (_upProblem = new DelegateCommand(ExecuteUpProblem));
+
+		void ExecuteUpProblem()
+		{
+			var i = Model.Problems.IndexOf(SelectedProblem);
+			if (SelectedProblem != null && i >= 1) {
+				Model.Problems.Move(i, i-1);
+			}
+		}
+
+		private DelegateCommand _downProblem;
+		public DelegateCommand DownProblem =>
+				_downProblem ?? (_downProblem = new DelegateCommand(ExecuteDownProblem));
+
+		void ExecuteDownProblem()
+		{
+			var i = Model.Problems.IndexOf(SelectedProblem);
+			if (SelectedProblem != null && i < Model.Problems.Count-1) {
+				Model.Problems.Move(i, i+1);
+			}
 		}
 	}
 }
