@@ -6,22 +6,22 @@ using Prism.Autofac;
 
 namespace ProkisoMarker
 {
-    class Bootstrapper : AutofacBootstrapper
-    {
-        protected override DependencyObject CreateShell()
-        {
-            return Container.Resolve<MainWindow>();
-        }
+	class Bootstrapper : AutofacBootstrapper
+	{
+		protected override DependencyObject CreateShell()
+		{
+			return Container.Resolve<MainWindow>();
+		}
 
-        protected override void InitializeShell()
-        {
-            Application.Current.MainWindow.Show();
-        }
+		protected override void InitializeShell()
+		{
+			Application.Current.MainWindow.Show();
+		}
 
-        protected override void ConfigureModuleCatalog()
-        {
-            var moduleCatalog = (ModuleCatalog)ModuleCatalog;
-            //moduleCatalog.AddModule(typeof(YOUR_MODULE));
-        }
-    }
+		protected override void ConfigureModuleCatalog()
+		{
+			var moduleCatalog = (ModuleCatalog)ModuleCatalog;
+			//moduleCatalog.AddModule(typeof(YOUR_MODULE));
+		}
+	}
 }
