@@ -7,7 +7,7 @@ namespace ProkisoMarker.ViewModels
 	{
 		public IModel Model { get; }
 
-		private string _title = "Prism Application";
+		private string _title = "ProkisoMarker";
 		public string Title
 		{
 			get { return _title; }
