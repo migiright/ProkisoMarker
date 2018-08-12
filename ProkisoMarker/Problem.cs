@@ -22,12 +22,6 @@ namespace ProkisoMarker
 			get { return _input; }
 			set { SetProperty(ref _input, value); }
 		}
-		private string _correctOutput;
-		public string CorrectOutput
-		{
-			get { return _correctOutput; }
-			set { SetProperty(ref _correctOutput, value); }
-		}
 		private ProblemType _type;
 		public ProblemType Type
 		{
