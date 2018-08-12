@@ -15,13 +15,13 @@ namespace ProkisoMarker
 	public class ProblemSet : BindableBase
 	{
 		public ObservableCollection<Problem> Problems { get; } = new ObservableCollection<Problem>();
-		private int _numBasicProblems;
+		private int _numBasicProblems = 0;
 		public int NumBasicProblems
 		{
 			get { return _numBasicProblems; }
 			private set { SetProperty(ref _numBasicProblems, value); }
 		}
-		private int _numAdvancedProblems;
+		private int _numAdvancedProblems = 0;
 		public int NumAdvancedPRoblems
 		{
 			get { return _numAdvancedProblems; }
@@ -35,11 +35,15 @@ namespace ProkisoMarker
 
 		private void Problems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			foreach (var item in e.NewItems.Cast<Problem>()) {
-				item.PropertyChanged += Problem_PropertyChanged;
+			if (e.NewItems != null) {
+				foreach (var item in e.NewItems.Cast<Problem>()) {
+					item.PropertyChanged += Problem_PropertyChanged;
+				}
 			}
-			foreach (var item in e.OldItems.Cast<Problem>()) {
-				item.PropertyChanged -= Problem_PropertyChanged;
+			if (e.OldItems != null) {
+				foreach (var item in e.OldItems.Cast<Problem>()) {
+					item.PropertyChanged -= Problem_PropertyChanged;
+				}
 			}
 			UpdateNumProblems();
 		}
