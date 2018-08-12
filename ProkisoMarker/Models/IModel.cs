@@ -5,6 +5,6 @@ namespace ProkisoMarker.Models
 {
 	public interface IModel
 	{
-		ObservableCollection<Problem> Problems { get; }
+		ProblemSet ProblemSet { get; }
 	}
 }

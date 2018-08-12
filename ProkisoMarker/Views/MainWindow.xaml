@@ -81,7 +81,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
           </Grid.RowDefinitions>
-          <DataGrid ItemsSource="{Binding Model.Problems}" SelectedItem="{Binding SelectedProblem}"
+          <DataGrid ItemsSource="{Binding Model.ProblemSet.Problems}" SelectedItem="{Binding SelectedProblem}"
                     AutoGenerateColumns="False" SelectionMode="Single" CanUserSortColumns="False"
                     CanUserAddRows="False" CanUserDeleteRows="False"
                     Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2">
