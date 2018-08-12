@@ -136,6 +136,7 @@
               <DataGridTextColumn Header="学籍番号"/>
               <DataGridTextColumn Header="氏名"/>
               <DataGridTextColumn Header="成績"/>
+              <DataGridTextColumn Header="発展"/>
             </DataGrid.Columns>
           </DataGrid>
           <GridSplitter Width="{StaticResource GridSplitterWidth}" Grid.Column="1"/>
