@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProkisoMarker", "ProkisoMarker\ProkisoMarker.csproj", "{90036D89-44A7-43BB-A9FE-844959D51D25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProkisoMarkerTests", "ProkisoMarkerTests\ProkisoMarkerTests.csproj", "{AE925BE2-60EF-45BB-828C-EDE14A2872A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{90036D89-44A7-43BB-A9FE-844959D51D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90036D89-44A7-43BB-A9FE-844959D51D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90036D89-44A7-43BB-A9FE-844959D51D25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE925BE2-60EF-45BB-828C-EDE14A2872A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE925BE2-60EF-45BB-828C-EDE14A2872A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE925BE2-60EF-45BB-828C-EDE14A2872A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE925BE2-60EF-45BB-828C-EDE14A2872A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
