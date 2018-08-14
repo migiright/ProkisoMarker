@@ -48,9 +48,21 @@ namespace ProkisoMarker
 				SetProperty(ref _modifiedSourcePath, value);
 			}
 		}
+		private string _executiongDirectory;
+		public string ExecutingDirectory
+		{
+			get { return _executiongDirectory; }
+			set { SetProperty(ref _executiongDirectory, value); }
+		}
 		public bool InputModified
 		{
 			get { return ModifiedInput != null; }
+		}
+		private string _executableFilePath;
+		public string ExecutableFilePath
+		{
+			get { return _executableFilePath; }
+			set { SetProperty(ref _executableFilePath, value); }
 		}
 		private string _modifiedInput;
 		public string ModifiedInput

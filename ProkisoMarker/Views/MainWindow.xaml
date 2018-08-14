@@ -45,6 +45,16 @@
         <x:Type TypeName="local:ProblemType"/>
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
+    <ObjectDataProvider x:Key="Evaluation" MethodName="GetValues" ObjectType="{x:Type local:Evaluation}">
+      <ObjectDataProvider.MethodParameters>
+        <x:Type TypeName="local:Evaluation"/>
+      </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="Compiler" MethodName="GetValues" ObjectType="{x:Type local:Compiler}">
+      <ObjectDataProvider.MethodParameters>
+        <x:Type TypeName="local:Compiler"/>
+      </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
   </Window.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -84,7 +94,9 @@
           <DataGrid ItemsSource="{Binding Model.ProblemSet.Problems}" SelectedItem="{Binding SelectedProblem}"
                     AutoGenerateColumns="False" SelectionMode="Single" CanUserSortColumns="False"
                     CanUserAddRows="False" CanUserDeleteRows="False"
-                    Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2">
+                    Grid.Column="0" Grid.Row="0" Grid.ColumnSpan
+                    
+                    ="3" Grid.RowSpan="2">
             <DataGrid.Columns>
               <DataGridTextColumn Header="番号" Binding="{Binding No}" IsReadOnly="True"/>
               <DataGridTextColumn Header="名前" Binding="{Binding Name}"/>
@@ -113,13 +125,20 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
           </Grid.RowDefinitions>
           <Label Grid.Column="0" Grid.Row="0">提出物</Label>
-          <TextBox Name="SubmissionFileTextBox" Style="{StaticResource SingleLineTextBoxStyle}" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
+          <TextBox Text="{Binding SubmissionFilePath}"
+                   Name="SubmissionFileTextBox" Style="{StaticResource SingleLineTextBoxStyle}"
+                   Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
           <Label Grid.Column="0" Grid.Row="1">作業ディレクトリ</Label>
-          <TextBox Name="WorkingDirectoryTextBox" Style="{StaticResource SingleLineTextBoxStyle}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"/>
-          <Button Grid.Column="3" Grid.Row="2">実行(_E)</Button>
+          <TextBox Text="{Binding WorkingDirectory}"
+                   Name="WorkingDirectoryTextBox" Style="{StaticResource SingleLineTextBoxStyle}"
+                   Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"/>
+          <Button Command="{Binding LoadSubmissions}" Grid.Column="3" Grid.Row="2">実行(_E)</Button>
+          <ComboBox ItemsSource="{Binding Source={StaticResource Compiler}}" SelectedItem="{Binding Model.Compiler}"
+                    Grid.Column="1" Grid.Row="3"/>
         </Grid>
       </TabItem>
       <TabItem Header="採点">
@@ -131,35 +150,38 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
-          <DataGrid Grid.Column="0">
+          <DataGrid ItemsSource="{Binding Model.Students}" SelectedItem="{Binding SelectedStudent}"
+                    AutoGenerateColumns="False" SelectionMode="Single" CanUserSortColumns="False"
+                    CanUserAddRows="False" CanUserDeleteRows="False"
+                    Grid.Column="0">
             <DataGrid.Columns>
-              <DataGridTextColumn Header="学籍番号"/>
-              <DataGridTextColumn Header="氏名"/>
-              <DataGridTextColumn Header="成績"/>
-              <DataGridTextColumn Header="発展"/>
+              <DataGridTextColumn Binding="{Binding StudentNo}" IsReadOnly="True" Header="学籍番号"/>
+              <DataGridTextColumn Binding="{Binding Name}" IsReadOnly="True" Header="氏名"/>
+              <DataGridTextColumn Binding="{Binding Score}" IsReadOnly="True" Header="成績"/>
+              <DataGridTextColumn Binding="{Binding AdvancedScore}" IsReadOnly="True" Header="発展"/>
             </DataGrid.Columns>
           </DataGrid>
           <GridSplitter Width="{StaticResource GridSplitterWidth}" Grid.Column="1"/>
           <Grid Grid.Column="2">
             <Grid.RowDefinitions>
               <RowDefinition Height="auto"/>
-              <RowDefinition Height="1*"/>
               <RowDefinition Height="auto"/>
-              <RowDefinition Height="3*"/>
+              <RowDefinition Height="auto"/>
+              <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <DataGrid Grid.Row="0">
+            <DataGrid ItemsSource="{Binding SelectedStudent.Answers}" SelectedItem="{Binding SelectedAnswer}"
+                      AutoGenerateColumns="False" SelectionMode="Single" CanUserSortColumns="False"
+                      CanUserAddRows="False" CanUserDeleteRows="False"
+                      Grid.Row="0">
               <DataGrid.Columns>
-                <DataGridTextColumn Header="番号"/>
-                <DataGridTextColumn Header="結果"/>
-                <DataGridComboBoxColumn Header="評価"/>
+                <DataGridTextColumn Binding="{Binding No}" IsReadOnly="True" Header="番号"/>
+                <DataGridTextColumn Binding="{Binding Result}" IsReadOnly="True" Header="結果"/>
+                <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource Evaluation}}"
+                                        SelectedItemBinding="{Binding Evaluation}"
+                                        Header="評価"/>
               </DataGrid.Columns>
             </DataGrid>
-            <TreeView Grid.Row="1">
-              <TreeViewItem Header="dir" IsExpanded="True">
-                <TreeViewItem Header="file1"/>
-              </TreeViewItem>
-              <TreeViewItem Header="file2"/>
-            </TreeView>
+            <TextBox Text="{Binding SelectedAnswer.OriginalSourcePath}" AcceptsReturn="False" Grid.Row="1"/>
             <GridSplitter Height="{StaticResource GridSplitterWidth}" Grid.Row="2"/>
             <Grid Grid.Row="3">
               <Grid.RowDefinitions>
@@ -173,7 +195,7 @@
               </Grid.ColumnDefinitions>
               <Label Grid.Row="0" Grid.Column="0">ソース</Label>
               <Button Grid.Row="0" Grid.Column="2">リセット(_S)</Button>
-              <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
+              <TextBox Text="{Binding Source}" IsReadOnly="True" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
             </Grid>
           </Grid>
           <GridSplitter Width="{StaticResource GridSplitterWidth}" Grid.Column="3"/>
@@ -191,14 +213,14 @@
               <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0">入力</Label>
-            <Button Grid.Row="0" Grid.Column="2">リセット(_I)</Button>
-            <Button Grid.Row="0" Grid.Column="3">実行(_E)</Button>
-            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"/>
+            <Button Command="{Binding ResetInput}" Grid.Row="0" Grid.Column="2">リセット(_I)</Button>
+            <Button Command="{Binding Run}" Grid.Row="0" Grid.Column="3">実行(_E)</Button>
+            <TextBox Text="{Binding Input}"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"/>
             <GridSplitter Height="{StaticResource GridSplitterWidth}"
                           Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"/>
             <DockPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
               <Label HorizontalAlignment="Left" DockPanel.Dock="Top">出力</Label>
-              <TextBox IsReadOnly="True"/>
+              <TextBox Text="{Binding SelectedAnswer.Output}" IsReadOnly="True"/>
             </DockPanel>
           </Grid>
         </Grid>
