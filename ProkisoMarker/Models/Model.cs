@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Text;
 //using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -203,6 +204,16 @@ namespace ProkisoMarker.Models
 		private Problem GetProblem(Answer answer)
 		{
 			return ProblemSet.Problems.Where(p => p.No == answer.No).First();
+		}
+
+		public void OutputScores()
+		{
+			using (var s = new FileStream(Path.Combine(WorkingDirectory, "result.csv"), FileMode.Create))
+			using (var sw = new StreamWriter(s, Encoding.GetEncoding(932))) {
+				foreach (var item in Students) {
+					sw.WriteLine($"{item.StudentNo},{item.Name},{item.Score},{item.AdvancedScore}");
+				}
+			}
 		}
 	}
 }

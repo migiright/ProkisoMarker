@@ -224,6 +224,15 @@ namespace ProkisoMarker.ViewModels
 		{
 			return Model.ProblemSet.Problems.Where(p => p.No == SelectedAnswer.No).First();
 		}
+
+		private DelegateCommand _outputScores;
+		public DelegateCommand OutputScores =>
+				_outputScores ?? (_outputScores = new DelegateCommand(ExecuteOutputScores));
+
+		void ExecuteOutputScores()
+		{
+			Model.OutputScores();
+		}
 	}
 }
 

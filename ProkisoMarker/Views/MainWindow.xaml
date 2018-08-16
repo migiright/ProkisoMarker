@@ -69,7 +69,7 @@
         <MenuItem Header="開く(_O)"/>
         <MenuItem Header="保存(_S)"/>
         <MenuItem Header="名前をつけて保存(_A)"/>
-        <MenuItem Header="採点結果を出力(_P)"/>
+        <MenuItem Command="{Binding OutputScores}" Header="採点結果を出力(_P)"/>
       </MenuItem>
       <MenuItem Header="ヘルプ(_H)">
         <MenuItem Header="バージョン情報(_A)"/>
