@@ -95,7 +95,7 @@ namespace ProkisoMarker.Models
 					if (!Directory.Exists(answer.ExecutingDirectory)) {
 						Directory.CreateDirectory(answer.ExecutingDirectory);
 					}
-					p.StandardInput.WriteLine($"cl {answer.OriginalSourcePath} /Fe\"{ef}\" /Fo\"{ef}\" {CompilerOptions}");
+					p.StandardInput.WriteLine($"cl \"{answer.OriginalSourcePath}\" /Fe\"{ef}\" /Fo\"{ef}\" {CompilerOptions}");
 					p.StandardInput.WriteLine("echo @@@errorlevel=%errorlevel%");
 					p.StandardInput.WriteLine("exit");
 					string l;
@@ -144,7 +144,7 @@ namespace ProkisoMarker.Models
 					answer.Output
 						+= "時間切れ" + Environment.NewLine;
 					p.Kill();
-					answer.Result = Result.RuntimeError;
+					answer.Result = Result.Timeout;
 				}
 			}
 		}
