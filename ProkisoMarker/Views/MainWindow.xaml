@@ -145,9 +145,9 @@
           <Grid Grid.Column="2">
             <Grid.RowDefinitions>
               <RowDefinition Height="auto"/>
-              <RowDefinition Height="1*"/>
               <RowDefinition Height="auto"/>
-              <RowDefinition Height="3*"/>
+              <RowDefinition Height="auto"/>
+              <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <DataGrid Grid.Row="0">
               <DataGrid.Columns>
@@ -156,12 +156,7 @@
                 <DataGridComboBoxColumn Header="評価"/>
               </DataGrid.Columns>
             </DataGrid>
-            <TreeView Grid.Row="1">
-              <TreeViewItem Header="dir" IsExpanded="True">
-                <TreeViewItem Header="file1"/>
-              </TreeViewItem>
-              <TreeViewItem Header="file2"/>
-            </TreeView>
+            <TextBox Style="{StaticResource SingleLineTextBoxStyle}" Grid.Row="1"/>
             <GridSplitter Height="{StaticResource GridSplitterWidth}" Grid.Row="2"/>
             <Grid Grid.Row="3">
               <Grid.RowDefinitions>
