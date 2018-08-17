@@ -23,6 +23,13 @@ namespace ProkisoMarker.ViewModels
 			set { SetProperty(ref _selectedProblem, value); }
 		}
 
+		private string _submissionFilePath;
+		public string SubmissionFilePath
+		{
+			get { return _submissionFilePath; }
+			set { SetProperty(ref _submissionFilePath, value); }
+		}
+
 		public MainWindowViewModel(IModel model)
 		{
 			Model = model;

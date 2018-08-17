@@ -116,7 +116,8 @@
             <RowDefinition Height="*"/>
           </Grid.RowDefinitions>
           <Label Grid.Column="0" Grid.Row="0">提出物</Label>
-          <TextBox Name="SubmissionFileTextBox" Style="{StaticResource SingleLineTextBoxStyle}" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
+          <TextBox Name="SubmissionFileTextBox" Text="{Binding SubmissionFilePath}"
+                   Style="{StaticResource SingleLineTextBoxStyle}" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
           <Label Grid.Column="0" Grid.Row="1">作業ディレクトリ</Label>
           <TextBox Name="WorkingDirectoryTextBox" Text="{Binding Model.WorkingDirectory}"
                    Style="{StaticResource SingleLineTextBoxStyle}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"/>
