@@ -45,6 +45,11 @@
         <x:Type TypeName="local:ProblemType"/>
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
+    <ObjectDataProvider x:Key="Evaluation" MethodName="GetValues" ObjectType="{x:Type local:Evaluation}">
+      <ObjectDataProvider.MethodParameters>
+        <x:Type TypeName="local:Evaluation"/>
+      </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
   </Window.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -152,14 +157,19 @@
               <RowDefinition Height="auto"/>
               <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <DataGrid Grid.Row="0">
+            <DataGrid ItemsSource="{Binding SelectedStudent.Answers}" SelectedItem="{Binding SelectedAnswer}"
+                      AutoGenerateColumns="False" SelectionMode="Single" CanUserSortColumns="False"
+                      CanUserAddRows="False" CanUserDeleteRows="False"
+                      Grid.Row="0">
               <DataGrid.Columns>
-                <DataGridTextColumn Header="番号"/>
-                <DataGridTextColumn Header="結果"/>
-                <DataGridComboBoxColumn Header="評価"/>
+                <DataGridTextColumn Binding="{Binding No}" IsReadOnly="True" Header="番号"/>
+                <DataGridTextColumn Binding="{Binding Result}" IsReadOnly="True" Header="結果"/>
+                <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource Evaluation}}"
+                                        SelectedItemBinding="{Binding Evaluation}"
+                                        Header="評価"/>
               </DataGrid.Columns>
             </DataGrid>
-            <TextBox Style="{StaticResource SingleLineTextBoxStyle}" Grid.Row="1"/>
+            <TextBox Text="{Binding SelectedAnswer.OriginalSourcePath}" Style="{StaticResource SingleLineTextBoxStyle}" Grid.Row="1"/>
             <GridSplitter Height="{StaticResource GridSplitterWidth}" Grid.Row="2"/>
             <Grid Grid.Row="3">
               <Grid.RowDefinitions>
@@ -198,7 +208,7 @@
                           Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"/>
             <DockPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
               <Label HorizontalAlignment="Left" DockPanel.Dock="Top">出力</Label>
-              <TextBox IsReadOnly="True"/>
+              <TextBox Text="{Binding SelectedAnswer.Output}" IsReadOnly="True"/>
             </DockPanel>
           </Grid>
         </Grid>

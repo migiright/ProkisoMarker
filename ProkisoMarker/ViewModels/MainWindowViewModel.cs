@@ -37,6 +37,13 @@ namespace ProkisoMarker.ViewModels
 			set { SetProperty(ref _selectedStudent, value); }
 		}
 
+		private Answer _selectedAnswer;
+		public Answer SelectedAnswer
+		{
+			get { return _selectedAnswer; }
+			set { SetProperty(ref _selectedAnswer, value); }
+		}
+
 		public MainWindowViewModel(IModel model)
 		{
 			Model = model;
