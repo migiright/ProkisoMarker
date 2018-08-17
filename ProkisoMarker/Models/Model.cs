@@ -16,6 +16,7 @@ namespace ProkisoMarker.Models
 				SetProperty(ref _workingDirectory, value);
 			}
 		}
+		public ObservableCollection<Student> Students { get; } = new ObservableCollection<Student>();
 
 		public Model()
 		{
