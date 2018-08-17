@@ -30,6 +30,13 @@ namespace ProkisoMarker.ViewModels
 			set { SetProperty(ref _submissionFilePath, value); }
 		}
 
+		private Student _selectedStudent;
+		public Student SelectedStudent
+		{
+			get { return _selectedStudent; }
+			set { SetProperty(ref _selectedStudent, value); }
+		}
+
 		public MainWindowViewModel(IModel model)
 		{
 			Model = model;

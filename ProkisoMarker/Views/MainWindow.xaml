@@ -133,12 +133,15 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
-          <DataGrid Grid.Column="0">
+          <DataGrid ItemsSource="{Binding Model.Students}" SelectedItem="{Binding SelectedStudent}"
+                    AutoGenerateColumns="False" SelectionMode="Single" CanUserSortColumns="False"
+                    CanUserAddRows="False" CanUserDeleteRows="False"
+                    Grid.Column="0">
             <DataGrid.Columns>
-              <DataGridTextColumn Header="学籍番号"/>
-              <DataGridTextColumn Header="氏名"/>
-              <DataGridTextColumn Header="成績"/>
-              <DataGridTextColumn Header="発展"/>
+              <DataGridTextColumn Binding="{Binding StudentNo}" IsReadOnly="True" Header="学籍番号"/>
+              <DataGridTextColumn Binding="{Binding Name}" IsReadOnly="True" Header="氏名"/>
+              <DataGridTextColumn Binding="{Binding Score}" IsReadOnly="True" Header="成績"/>
+              <DataGridTextColumn Binding="{Binding AdvancedScore}" IsReadOnly="True" Header="発展"/>
             </DataGrid.Columns>
           </DataGrid>
           <GridSplitter Width="{StaticResource GridSplitterWidth}" Grid.Column="1"/>
