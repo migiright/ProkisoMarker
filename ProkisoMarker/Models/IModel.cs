@@ -6,5 +6,6 @@ namespace ProkisoMarker.Models
 	public interface IModel
 	{
 		ProblemSet ProblemSet { get; }
+		string WorkingDirectory { get; set; }
 	}
 }

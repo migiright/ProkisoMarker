@@ -7,6 +7,15 @@ namespace ProkisoMarker.Models
 	public class Model : BindableBase, IModel
 	{
 		public ProblemSet ProblemSet { get; } = new ProblemSet();
+		private string _workingDirectory = "working";
+		public string WorkingDirectory
+		{
+			get { return _workingDirectory; }
+			set {
+				var v = value ?? "";
+				SetProperty(ref _workingDirectory, value);
+			}
+		}
 
 		public Model()
 		{
