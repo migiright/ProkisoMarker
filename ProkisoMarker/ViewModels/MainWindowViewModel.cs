@@ -141,6 +141,15 @@ namespace ProkisoMarker.ViewModels
 			return Source != null;
 		}
 
+		private DelegateCommand _outputScores;
+		public DelegateCommand OutputScores =>
+			_outputScores ?? (_outputScores = new DelegateCommand(ExecuteOutputScores));
+
+		void ExecuteOutputScores()
+		{
+			Model.OutputScores();
+		}
+
 		private Answer _previousSelectedAnswer;
 
 		private void ChangeSource()

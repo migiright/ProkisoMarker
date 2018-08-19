@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -179,6 +180,18 @@ namespace ProkisoMarker.Models
 			return CompileAll().Where(a => a.ExecutableFilePath != null)
 				.Select(async a => { await Run(a); return a; })
 				.Merge();
+		}
+
+		public Task OutputScores()
+		{
+			return Task.Run(async () => {
+				using (var s = new FileStream(Path.Combine(WorkingDirectory, "result.csv"), FileMode.Create))
+				using (var sw = new StreamWriter(s, Encoding.GetEncoding(932))) {
+					foreach (var item in Students) {
+						await sw.WriteLineAsync($"{item.StudentNo},{item.Name},{item.Score},{item.AdvancedScore}");
+					}
+				}
+			});
 		}
 
 		const string RelativeSubmissionsDirectory = @"submissions\";

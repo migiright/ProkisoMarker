@@ -19,5 +19,6 @@ namespace ProkisoMarker.Models
 		Task Run(Answer answer);
 		IObservable<Answer> CompileAll();
 		IObservable<Answer> CompileAndRunAll();
+		Task OutputScores();
 	}
 }
