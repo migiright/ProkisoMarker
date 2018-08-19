@@ -1,6 +1,8 @@
 ﻿using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -8,6 +10,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace ProkisoMarker.Models
@@ -88,10 +91,63 @@ namespace ProkisoMarker.Models
 			return ProblemSet.Problems.Where(p => p.No == answer.No).First();
 		}
 
+		public Task Compile(Answer answer)
+		{
+			return Task.Run(async () => {
+				var psi = new ProcessStartInfo(Environment.GetEnvironmentVariable("comspec")) {
+					RedirectStandardOutput = true,
+					RedirectStandardInput = true,
+					RedirectStandardError = true,
+					UseShellExecute = false,
+					CreateNoWindow = true,
+					Arguments = VsDevCmdTable[Compiler],
+				};
+				Match m;
+				var outputLines = new List<string>();
+				var exePath = Path.Combine(answer.ExecutionDirectory, "a");
+				using (var p = Process.Start(psi)) {
+					if (!Directory.Exists(answer.ExecutionDirectory)) {
+						Directory.CreateDirectory(answer.ExecutionDirectory);
+					}
+					p.StandardInput.WriteLine($"cl \"{answer.OriginalSourcePath}\" /Fe\"{exePath}\" /Fo\"{exePath}\" {CompilerOptions}");
+					p.StandardInput.WriteLine("echo @@@errorlevel=%errorlevel%");
+					p.StandardInput.WriteLine("exit");
+					string l;
+					while ((m = ReturnValueGetter.Match(l = await p.StandardOutput.ReadLineAsync())).Value == "") {
+						outputLines.Add(l);
+					}
+				}
+				var returnValue = int.Parse(m.Groups[1].Value);
+				var output = outputLines.GetRange(6, outputLines.Count-6-2).Aggregate("", (ls, l) => ls + l + Environment.NewLine);
+				answer.Output = (returnValue == 0 ? "コンパイル成功" : $"コンパイル失敗 戻り値: {returnValue}") + Environment.NewLine
+					+ $"+++コンパイラ出力+++{Environment.NewLine}"
+					+ output
+					+ $"---コンパイラ出力---{Environment.NewLine}";
+				if (returnValue == 0) {
+					answer.ExecutableFilePath = exePath;
+				} else {
+					answer.Result = Result.CompileError;
+				}
+			});
+		}
+
 		const string RelativeSubmissionsDirectory = @"submissions\";
 		const string RelativeExecutionDirectory = @"execution\";
 		static readonly Regex ZipNameSplitter = new Regex(@"^(\d{7}) (.+?)_.*\.zip$", RegexOptions.IgnoreCase);
 		static readonly Regex ExerciseNoGetter = new Regex(@"第(\d+)回");
+		static readonly ReadOnlyDictionary<Compiler, string> VsDevCmdTable
+			= new ReadOnlyDictionary<Compiler, string>(new Dictionary<Compiler, string> {
+				{
+					Compiler.Vs2017Community,
+					@"""/k """"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"""""""
+				},
+				{
+					Compiler.Vs2017Professional,
+					@"""/k """"C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\Tools\VsDevCmd.bat"""""""
+				},
+			});
+		const string CompilerOptions = @"/GS /analyze- /W3 /Od /Zc:inline /fp:precise /RTC1 /Oy- /MDd /EHsc /nologo";
+		static readonly Regex ReturnValueGetter = new Regex(@"^@@@errorlevel=(\d+)$", RegexOptions.Compiled);
 
 		private string GetRelativeStudentDirectory(Student student)
 		{

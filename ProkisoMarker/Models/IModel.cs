@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ProkisoMarker.Models
 {
@@ -14,5 +15,6 @@ namespace ProkisoMarker.Models
 		Compiler Compiler { get; }
 		IObservable<Student> LoadSubmissions(string filePath);
 		Problem GetProblemOf(Answer answer);
+		Task Compile(Answer answer);
 	}
 }
