@@ -4,6 +4,8 @@ using ProkisoMarker.Models;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Windows;
+using System.Windows.Data;
 
 namespace ProkisoMarker.ViewModels
 {
@@ -51,6 +53,15 @@ namespace ProkisoMarker.ViewModels
 		{
 			get { return _source; }
 			set { SetProperty(ref _source, value); }
+		}
+
+		private bool _inputChangedBySystem = false;
+		private object _inputSyncObject = new object();
+		private string _input;
+		public string Input
+		{
+			get { return _input; }
+			set { lock (_inputSyncObject) { SetProperty(ref _input, value); } }
 		}
 
 		public MainWindowViewModel(IModel model)
@@ -137,6 +148,23 @@ namespace ProkisoMarker.ViewModels
 					SelectedAnswer.PropertyChanged += SelectedAnswer_PropertyChanged;
 				}
 				ChangeSource();
+
+				lock (_inputSyncObject) {
+					_inputChangedBySystem = true;
+					if (SelectedAnswer != null) {
+						Input = SelectedAnswer.InputModified
+							? SelectedAnswer.ModifiedInput
+							: Model.GetProblemOf(SelectedAnswer).Input;
+					} else {
+						Input = null;
+					}
+					_inputChangedBySystem = false;
+				}
+				break;
+			case nameof(Input):
+				if (!_inputChangedBySystem && SelectedAnswer != null) {
+					SelectedAnswer.ModifiedInput = Input;
+				}
 				break;
 			}
 		}
