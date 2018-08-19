@@ -183,7 +183,7 @@
               </Grid.ColumnDefinitions>
               <Label Grid.Row="0" Grid.Column="0">ソース</Label>
               <Button Grid.Row="0" Grid.Column="2">リセット(_S)</Button>
-              <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
+              <TextBox Text="{Binding Source}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
             </Grid>
           </Grid>
           <GridSplitter Width="{StaticResource GridSplitterWidth}" Grid.Column="3"/>

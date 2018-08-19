@@ -2,6 +2,8 @@
 using Prism.Mvvm;
 using ProkisoMarker.Models;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 
 namespace ProkisoMarker.ViewModels
 {
@@ -44,9 +46,17 @@ namespace ProkisoMarker.ViewModels
 			set { SetProperty(ref _selectedAnswer, value); }
 		}
 
+		private string _source;
+		public string Source
+		{
+			get { return _source; }
+			set { SetProperty(ref _source, value); }
+		}
+
 		public MainWindowViewModel(IModel model)
 		{
 			Model = model;
+			PropertyChanged += MainWindowViewModel_PropertyChanged;
 		}
 
 		private DelegateCommand _addProblen;
@@ -100,6 +110,42 @@ namespace ProkisoMarker.ViewModels
 		void ExecuteLoadSubmissions()
 		{
 			Model.LoadSubmissions(SubmissionFilePath);
+		}
+
+		private Answer _previousSelectedAnswer;
+
+		private void ChangeSource()
+		{
+			if (SelectedAnswer?.OriginalSourcePath != null && File.Exists(SelectedAnswer.OriginalSourcePath)) {
+				using (var sr = new StreamReader(SelectedAnswer.OriginalSourcePath, Encoding.GetEncoding(932))) {
+					Source = sr.ReadToEnd();
+				}
+			} else {
+				Source = null;
+			}
+		}
+
+		private void MainWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			switch (e.PropertyName) {
+			case nameof(SelectedAnswer):
+				if (_previousSelectedAnswer != null) {
+					_previousSelectedAnswer.PropertyChanged -= SelectedAnswer_PropertyChanged;
+				}
+				_previousSelectedAnswer = SelectedAnswer;
+				if (SelectedAnswer != null) {
+					SelectedAnswer.PropertyChanged += SelectedAnswer_PropertyChanged;
+				}
+				ChangeSource();
+				break;
+			}
+		}
+
+		private void SelectedAnswer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(Answer.OriginalSourcePath)) {
+				ChangeSource();
+			}
 		}
 	}
 }
