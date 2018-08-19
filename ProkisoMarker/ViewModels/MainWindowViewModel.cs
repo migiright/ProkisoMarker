@@ -127,9 +127,11 @@ namespace ProkisoMarker.ViewModels
 		public DelegateCommand Run =>
 				_run ?? (_run = new DelegateCommand(ExecuteRun, CanExecuteRun));
 
-		void ExecuteRun()
+		async void ExecuteRun()
 		{
-			Model.Compile(SelectedAnswer);
+			var a = SelectedAnswer;
+			await Model.Compile(a);
+			await Model.Run(a);
 		}
 
 		bool CanExecuteRun()
