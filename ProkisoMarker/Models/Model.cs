@@ -131,6 +131,40 @@ namespace ProkisoMarker.Models
 			});
 		}
 
+		public Task Run(Answer answer)
+		{
+			return Task.Run(async () => {
+				using (var p = Process.Start(new ProcessStartInfo(answer.ExecutableFilePath) {
+					RedirectStandardOutput = true,
+					RedirectStandardInput = true,
+					RedirectStandardError = true,
+					UseShellExecute = false,
+					CreateNoWindow = true,
+				})) {
+					answer.Output += "実行開始" + Environment.NewLine;
+					p.StandardInput.Write(answer.InputModified ? answer.ModifiedInput : GetProblemOf(answer).Input);
+					for (var i = 0; i < 10; ++i) p.StandardInput.WriteLine();
+					for (var i = 0; i < ExecutionTime/20; ++i) {
+						await Task.Delay(20);
+						if (p.HasExited) break;
+					}
+					if (p.HasExited) {
+						answer.Output
+							+= "実行完了" + Environment.NewLine
+							+ "+++出力+++" + Environment.NewLine
+							+ await p.StandardOutput.ReadToEndAsync() + Environment.NewLine
+							+ "---出力---" + Environment.NewLine;
+						answer.Result = Result.Success;
+					} else {
+						answer.Output
+							+= "時間切れ" + Environment.NewLine;
+						p.Kill();
+						answer.Result = Result.Timeout;
+					}
+				}
+			});
+		}
+
 		const string RelativeSubmissionsDirectory = @"submissions\";
 		const string RelativeExecutionDirectory = @"execution\";
 		static readonly Regex ZipNameSplitter = new Regex(@"^(\d{7}) (.+?)_.*\.zip$", RegexOptions.IgnoreCase);
@@ -148,6 +182,7 @@ namespace ProkisoMarker.Models
 			});
 		const string CompilerOptions = @"/GS /analyze- /W3 /Od /Zc:inline /fp:precise /RTC1 /Oy- /MDd /EHsc /nologo";
 		static readonly Regex ReturnValueGetter = new Regex(@"^@@@errorlevel=(\d+)$", RegexOptions.Compiled);
+		const int ExecutionTime = 5000;
 
 		private string GetRelativeStudentDirectory(Student student)
 		{

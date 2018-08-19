@@ -16,5 +16,6 @@ namespace ProkisoMarker.Models
 		IObservable<Student> LoadSubmissions(string filePath);
 		Problem GetProblemOf(Answer answer);
 		Task Compile(Answer answer);
+		Task Run(Answer answer);
 	}
 }
