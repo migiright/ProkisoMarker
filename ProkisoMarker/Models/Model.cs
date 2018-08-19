@@ -135,6 +135,18 @@ namespace ProkisoMarker.Models
 		public Task Run(Answer answer)
 		{
 			return Task.Run(async () => {
+				foreach (var fp in Directory.EnumerateFiles(answer.ExecutionDirectory, "*", SearchOption.TopDirectoryOnly)
+					.Where(p => !NecessaryFiles.Contains(Path.GetFileName(p)))) {
+					File.Delete(fp);
+				}
+				if (GetProblemOf(answer).InputFiles != null) {
+					foreach (var fp in (GetProblemOf(answer).InputFiles)
+						.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+						.Select(l => l.Trim())
+						.Where(l => l != "" && File.Exists(l))) {
+						File.Copy(fp, Path.Combine(answer.ExecutionDirectory, Path.GetFileName(fp)));
+					}
+				}
 				using (var p = Process.Start(new ProcessStartInfo(answer.ExecutableFilePath) {
 					RedirectStandardOutput = true,
 					RedirectStandardInput = true,
@@ -212,6 +224,8 @@ namespace ProkisoMarker.Models
 		const string CompilerOptions = @"/GS /analyze- /W3 /Od /Zc:inline /fp:precise /RTC1 /Oy- /MDd /EHsc /nologo";
 		static readonly Regex ReturnValueGetter = new Regex(@"^@@@errorlevel=(\d+)$", RegexOptions.Compiled);
 		const int ExecutionTime = 5000;
+		static readonly ReadOnlyCollection<string> NecessaryFiles
+			= new ReadOnlyCollection<string>(new[] { "a.exe", "a.obj" });
 
 		private string GetRelativeStudentDirectory(Student student)
 		{
