@@ -27,6 +27,12 @@ namespace ProkisoMarker.Models
 		public ObservableCollection<Student> Students { get; } = new ObservableCollection<Student>();
 		public string SubmissionsDirectory => Path.Combine(WorkingDirectory, RelativeSubmissionsDirectory);
 		public string ExecutionDirectory => Path.Combine(WorkingDirectory, RelativeExecutionDirectory);
+		private Compiler _compiler;
+		public Compiler Compiler
+		{
+			get { return _compiler; }
+			set { SetProperty(ref _compiler, value); }
+		}
 
 		public Model()
 		{
