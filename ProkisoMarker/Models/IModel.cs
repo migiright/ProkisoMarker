@@ -17,5 +17,6 @@ namespace ProkisoMarker.Models
 		Problem GetProblemOf(Answer answer);
 		Task Compile(Answer answer);
 		Task Run(Answer answer);
+		IObservable<Answer> CompileAll();
 	}
 }

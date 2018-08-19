@@ -165,6 +165,15 @@ namespace ProkisoMarker.Models
 			});
 		}
 
+		public IObservable<Answer> CompileAll()
+		{
+			return Students.SelectMany(s => s.Answers)
+				.Where(a => a.OriginalSourcePath != null)
+				.Select(async a => { await Compile(a); return a; })
+				.ToObservable()
+				.Merge();
+		}
+
 		const string RelativeSubmissionsDirectory = @"submissions\";
 		const string RelativeExecutionDirectory = @"execution\";
 		static readonly Regex ZipNameSplitter = new Regex(@"^(\d{7}) (.+?)_.*\.zip$", RegexOptions.IgnoreCase);
