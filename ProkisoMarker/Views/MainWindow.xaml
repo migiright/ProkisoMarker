@@ -81,35 +81,52 @@
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-          </Grid.RowDefinitions>
-          <DataGrid ItemsSource="{Binding Model.ProblemSet.Problems}" SelectedItem="{Binding SelectedProblem}"
-                    AutoGenerateColumns="False" SelectionMode="Single" CanUserSortColumns="False"
-                    CanUserAddRows="False" CanUserDeleteRows="False"
-                    Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2">
-            <DataGrid.Columns>
-              <DataGridTextColumn Header="番号" Binding="{Binding No}" IsReadOnly="True"/>
-              <DataGridTextColumn Header="名前" Binding="{Binding Name}"/>
-              <DataGridComboBoxColumn Header="種類"
-                                      ItemsSource="{Binding Source={StaticResource ProblemType}}"
-                                      SelectedItemBinding="{Binding Type}"/>
-            </DataGrid.Columns>
-          </DataGrid>
-          <Button Command="{Binding UpProblem}" Grid.Column="0" Grid.Row="2">上へ(_U)</Button>
-          <Button Command="{Binding DownProblem}" Grid.Column="1" Grid.Row="2">下へ(_D)</Button>
-          <Button Command="{Binding AddProblem}" Grid.Column="0" Grid.Row="3">追加(_A)</Button>
-          <Button Command="{Binding RemoveProblem}" Grid.Column="1" Grid.Row="3">削除(_R)</Button>
-          <GridSplitter Width="{StaticResource GridSplitterWidth}" Grid.Column="3" Grid.Row="0" Grid.RowSpan="4"/>
-          <Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Left">入力</Label>
-          <TextBox Text="{Binding SelectedProblem.Input}" Grid.Row="1" Grid.Column="4" Grid.RowSpan="3"/>
+          <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="auto"/>
+              <ColumnDefinition Width="auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="auto"/>
+              <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <DataGrid ItemsSource="{Binding Model.ProblemSet.Problems}" SelectedItem="{Binding SelectedProblem}"
+                      AutoGenerateColumns="False" SelectionMode="Single" CanUserSortColumns="False"
+                      CanUserAddRows="False" CanUserDeleteRows="False"
+                      Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+              <DataGrid.Columns>
+                <DataGridTextColumn Header="番号" Binding="{Binding No}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="名前" Binding="{Binding Name}"/>
+                <DataGridComboBoxColumn Header="種類"
+                                        ItemsSource="{Binding Source={StaticResource ProblemType}}"
+                                        SelectedItemBinding="{Binding Type}"/>
+              </DataGrid.Columns>
+            </DataGrid>
+            <Button Command="{Binding UpProblem}" Grid.Column="0" Grid.Row="1">上へ(_U)</Button>
+            <Button Command="{Binding DownProblem}" Grid.Column="1" Grid.Row="1">下へ(_D)</Button>
+            <Button Command="{Binding AddProblem}" Grid.Column="0" Grid.Row="2">追加(_A)</Button>
+            <Button Command="{Binding RemoveProblem}" Grid.Column="1" Grid.Row="2">削除(_R)</Button>
+          </Grid>
+          <GridSplitter Width="{StaticResource GridSplitterWidth}" Grid.Column="1"/>
+          <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="auto"/>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="auto"/>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" HorizontalAlignment="Left">入力</Label>
+            <TextBox Text="{Binding SelectedProblem.Input}" Grid.Row="1"/>
+            <GridSplitter Height="{StaticResource GridSplitterWidth}" Grid.Row="2"/>
+            <DockPanel Grid.Row="3">
+              <Label DockPanel.Dock="Top" HorizontalAlignment="Left">入力ファイル</Label>
+              <TextBox/>
+            </DockPanel>
+          </Grid>
         </Grid>
       </TabItem>
       <TabItem Header="読み込み">
