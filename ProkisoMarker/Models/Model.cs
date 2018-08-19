@@ -174,6 +174,13 @@ namespace ProkisoMarker.Models
 				.Merge();
 		}
 
+		public IObservable<Answer> CompileAndRunAll()
+		{
+			return CompileAll().Where(a => a.ExecutableFilePath != null)
+				.Select(async a => { await Run(a); return a; })
+				.Merge();
+		}
+
 		const string RelativeSubmissionsDirectory = @"submissions\";
 		const string RelativeExecutionDirectory = @"execution\";
 		static readonly Regex ZipNameSplitter = new Regex(@"^(\d{7}) (.+?)_.*\.zip$", RegexOptions.IgnoreCase);
