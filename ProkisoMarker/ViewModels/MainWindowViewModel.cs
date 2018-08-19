@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using ProkisoMarker.Models;
 using System.Diagnostics;
 using System.IO;
+using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
@@ -118,9 +119,10 @@ namespace ProkisoMarker.ViewModels
 		public DelegateCommand LoadSubmissions =>
 				_loadSubmissions ?? (_loadSubmissions = new DelegateCommand(ExecuteLoadSubmissions));
 
-		void ExecuteLoadSubmissions()
+		async void ExecuteLoadSubmissions()
 		{
-			Model.LoadSubmissions(SubmissionFilePath);
+			await Model.LoadSubmissions(SubmissionFilePath);
+			await Model.CompileAndRunAll();
 		}
 
 		private DelegateCommand _run;
