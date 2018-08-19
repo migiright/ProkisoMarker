@@ -35,7 +35,7 @@ namespace ProkisoMarker.ViewModels
 		void ExecuteAddProblem()
 		{
 			var p = new Problem();
-			Model.Problems.Add(p);
+			Model.ProblemSet.Problems.Add(p);
 			SelectedProblem = p;
 		}
 
@@ -45,7 +45,7 @@ namespace ProkisoMarker.ViewModels
 
 		void ExecuteRemoveProblem()
 		{
-			Model.Problems.Remove(SelectedProblem);
+			Model.ProblemSet.Problems.Remove(SelectedProblem);
 		}
 
 		private DelegateCommand _upProblem;
@@ -54,9 +54,9 @@ namespace ProkisoMarker.ViewModels
 
 		void ExecuteUpProblem()
 		{
-			var i = Model.Problems.IndexOf(SelectedProblem);
+			var i = Model.ProblemSet.Problems.IndexOf(SelectedProblem);
 			if (SelectedProblem != null && i >= 1) {
-				Model.Problems.Move(i, i-1);
+				Model.ProblemSet.Problems.Move(i, i-1);
 			}
 		}
 
@@ -66,9 +66,9 @@ namespace ProkisoMarker.ViewModels
 
 		void ExecuteDownProblem()
 		{
-			var i = Model.Problems.IndexOf(SelectedProblem);
-			if (SelectedProblem != null && i < Model.Problems.Count-1) {
-				Model.Problems.Move(i, i+1);
+			var i = Model.ProblemSet.Problems.IndexOf(SelectedProblem);
+			if (SelectedProblem != null && i < Model.ProblemSet.Problems.Count-1) {
+				Model.ProblemSet.Problems.Move(i, i+1);
 			}
 		}
 	}
