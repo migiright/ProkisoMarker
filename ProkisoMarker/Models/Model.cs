@@ -1,5 +1,6 @@
 ﻿using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 
 namespace ProkisoMarker.Models
@@ -17,11 +18,16 @@ namespace ProkisoMarker.Models
 			}
 		}
 		public ObservableCollection<Student> Students { get; } = new ObservableCollection<Student>();
+		public string SubmissionsDirectory => Path.Combine(WorkingDirectory, RelativeSubmissionsDirectory);
+		public string ExecutionDirectory => Path.Combine(WorkingDirectory, RelativeExecutionDirectory);
 
 		public Model()
 		{
 			ProblemSet.Problems.CollectionChanged += Problems_CollectionChanged;
 		}
+
+		const string RelativeSubmissionsDirectory = @"submissions\";
+		const string RelativeExecutionDirectory = @"execution\";
 
 		private void Problems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{

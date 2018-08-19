@@ -8,5 +8,7 @@ namespace ProkisoMarker.Models
 		ProblemSet ProblemSet { get; }
 		string WorkingDirectory { get; set; }
 		ObservableCollection<Student> Students { get; }
+		string SubmissionsDirectory { get; }
+		string ExecutionDirectory { get; }
 	}
 }
