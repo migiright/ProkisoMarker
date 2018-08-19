@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.ObjectModel;
 
 namespace ProkisoMarker.Models
@@ -10,5 +11,6 @@ namespace ProkisoMarker.Models
 		ObservableCollection<Student> Students { get; }
 		string SubmissionsDirectory { get; }
 		string ExecutionDirectory { get; }
+		IObservable<Student> LoadSubmissions(string filePath);
 	}
 }

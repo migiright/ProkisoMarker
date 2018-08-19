@@ -78,5 +78,14 @@ namespace ProkisoMarker.ViewModels
 				Model.ProblemSet.Problems.Move(i, i+1);
 			}
 		}
+
+		private DelegateCommand _loadSubmissions;
+		public DelegateCommand LoadSubmissions =>
+				_loadSubmissions ?? (_loadSubmissions = new DelegateCommand(ExecuteLoadSubmissions));
+
+		void ExecuteLoadSubmissions()
+		{
+			Model.LoadSubmissions(SubmissionFilePath);
+		}
 	}
 }

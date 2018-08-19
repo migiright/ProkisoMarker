@@ -121,7 +121,7 @@
           <Label Grid.Column="0" Grid.Row="1">作業ディレクトリ</Label>
           <TextBox Name="WorkingDirectoryTextBox" Text="{Binding Model.WorkingDirectory}"
                    Style="{StaticResource SingleLineTextBoxStyle}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"/>
-          <Button Grid.Column="3" Grid.Row="2">実行(_E)</Button>
+          <Button Command="{Binding LoadSubmissions}" Grid.Column="3" Grid.Row="2">実行(_E)</Button>
         </Grid>
       </TabItem>
       <TabItem Header="採点">
