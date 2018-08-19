@@ -1,4 +1,5 @@
 ﻿using Prism.Mvvm;
+using System.Collections.ObjectModel;
 
 namespace ProkisoMarker
 {
@@ -27,6 +28,12 @@ namespace ProkisoMarker
 		{
 			get { return _type; }
 			set { SetProperty(ref _type, value); }
+		}
+		private string _inputFiles;
+		public string InputFiles
+		{
+			get { return _inputFiles; }
+			set { SetProperty(ref _inputFiles, value); }
 		}
 	}
 }

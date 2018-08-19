@@ -124,7 +124,7 @@
             <GridSplitter Height="{StaticResource GridSplitterWidth}" Grid.Row="2"/>
             <DockPanel Grid.Row="3">
               <Label DockPanel.Dock="Top" HorizontalAlignment="Left">入力ファイル</Label>
-              <TextBox/>
+              <TextBox Text="{Binding SelectedProblem.InputFiles}"/>
             </DockPanel>
           </Grid>
         </Grid>
