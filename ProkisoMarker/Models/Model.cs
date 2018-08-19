@@ -77,6 +77,11 @@ namespace ProkisoMarker.Models
 			return observable;
 		}
 
+		public Problem GetProblemOf(Answer answer)
+		{
+			return ProblemSet.Problems.Where(p => p.No == answer.No).First();
+		}
+
 		const string RelativeSubmissionsDirectory = @"submissions\";
 		const string RelativeExecutionDirectory = @"execution\";
 		static readonly Regex ZipNameSplitter = new Regex(@"^(\d{7}) (.+?)_.*\.zip$", RegexOptions.IgnoreCase);

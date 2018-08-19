@@ -12,5 +12,6 @@ namespace ProkisoMarker.Models
 		string SubmissionsDirectory { get; }
 		string ExecutionDirectory { get; }
 		IObservable<Student> LoadSubmissions(string filePath);
+		Problem GetProblemOf(Answer answer);
 	}
 }
