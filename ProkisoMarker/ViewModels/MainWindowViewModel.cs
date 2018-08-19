@@ -123,6 +123,20 @@ namespace ProkisoMarker.ViewModels
 			Model.LoadSubmissions(SubmissionFilePath);
 		}
 
+		private DelegateCommand _run;
+		public DelegateCommand Run =>
+				_run ?? (_run = new DelegateCommand(ExecuteRun, CanExecuteRun));
+
+		void ExecuteRun()
+		{
+			Model.Compile(SelectedAnswer);
+		}
+
+		bool CanExecuteRun()
+		{
+			return Source != null;
+		}
+
 		private Answer _previousSelectedAnswer;
 
 		private void ChangeSource()
@@ -134,6 +148,7 @@ namespace ProkisoMarker.ViewModels
 			} else {
 				Source = null;
 			}
+			Run.RaiseCanExecuteChanged();
 		}
 
 		private void MainWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
