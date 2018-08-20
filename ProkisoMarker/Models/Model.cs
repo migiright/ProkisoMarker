@@ -153,6 +153,7 @@ namespace ProkisoMarker.Models
 					RedirectStandardError = true,
 					UseShellExecute = false,
 					CreateNoWindow = true,
+					WorkingDirectory = answer.ExecutionDirectory,
 				})) {
 					answer.Output += "実行開始" + Environment.NewLine;
 					p.StandardInput.Write(answer.InputModified ? answer.ModifiedInput : GetProblemOf(answer).Input);
