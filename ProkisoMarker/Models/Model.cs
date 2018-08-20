@@ -49,7 +49,7 @@ namespace ProkisoMarker.Models
 			string toHankaku(string str)
 				=> string.Concat(str.Select(c => ('０' <= c && c <= '９') ? (char)('0' + c - '０') : c));
 			var observable = Observable.Create<Student>(obs => {
-				using (var archive = ZipFile.Open(filePath, ZipArchiveMode.Read)) {
+				using (var archive = ZipFile.Open(filePath, ZipArchiveMode.Read, Encoding.GetEncoding(932))) {
 					var excerciseNo = int.Parse(toHankaku(ExerciseNoGetter.Match(Path.GetFileName(filePath)).Groups[1].Value));
 					var tuples = archive.Entries.Select(entry => (entry: entry, match: ZipNameSplitter.Match(entry.Name)))
 						.Where(t => t.match.Success);
