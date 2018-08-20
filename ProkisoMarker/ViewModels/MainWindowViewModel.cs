@@ -133,7 +133,9 @@ namespace ProkisoMarker.ViewModels
 		{
 			var a = SelectedAnswer;
 			await Model.Compile(a);
-			await Model.Run(a);
+			if (a.ExecutableFilePath != null) {
+				await Model.Run(a);
+			}
 		}
 
 		bool CanExecuteRun()
