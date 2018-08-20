@@ -150,6 +150,26 @@ namespace ProkisoMarker.ViewModels
 			Model.OutputScores();
 		}
 
+		private DelegateCommand _resetInput;
+		public DelegateCommand ResetInput =>
+				_resetInput ?? (_resetInput = new DelegateCommand(ExecuteResetInput, CanExecuteResetInput));
+
+		void ExecuteResetInput()
+		{
+			SelectedAnswer.ModifiedInput = null;
+			lock (_inputSyncObject) {
+				_inputChangedBySystem = true;
+				Input = Model.GetProblemOf(SelectedAnswer).Input;
+				_inputChangedBySystem  = false;
+			}
+			ResetInput.RaiseCanExecuteChanged();
+		}
+
+		bool CanExecuteResetInput()
+		{
+			return SelectedAnswer != null && SelectedAnswer.InputModified;
+		}
+
 		private Answer _previousSelectedAnswer;
 
 		private void ChangeSource()
@@ -188,10 +208,12 @@ namespace ProkisoMarker.ViewModels
 					}
 					_inputChangedBySystem = false;
 				}
+				ResetInput.RaiseCanExecuteChanged();
 				break;
 			case nameof(Input):
 				if (!_inputChangedBySystem && SelectedAnswer != null) {
 					SelectedAnswer.ModifiedInput = Input;
+					ResetInput.RaiseCanExecuteChanged();
 				}
 				break;
 			}
